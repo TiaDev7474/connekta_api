@@ -25,7 +25,7 @@ interface IUserMethods {
 }
 
 const UserSchema = new Schema<IUser,{},IUserMethods>({
-    username:{ type: String , required:true},
+    // username:{ type: String , required:true},
     email:{ type: String , index:true},
     bio:{ type: String},
     isVerified:{type: Boolean , default:false},
@@ -55,7 +55,7 @@ UserSchema.pre('save', async function(next){
         return next();
     }
     try{
-        const hashedPassword = await bcrypt.hash(user.password, await bcrypt.getSalt(10));
+        const hashedPassword = await bcrypt.hash(user.password, 10);
         user.password = hashedPassword;
         return next();
                                      

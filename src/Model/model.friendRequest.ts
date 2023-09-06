@@ -10,7 +10,7 @@ interface IFriendRequest {
 const FrienRequestSchema = new Schema<IFriendRequest>({
     author:{ type: Schema.Types.ObjectId, ref:'User'},
     destination: { type: Schema.Types.ObjectId, ref:'User'},
-    status:{ type: String, enum:['pending','approved','rejected']}
+    status:{ type: String, enum:['pending','approved','rejected'], default:'pending'}
 },{
     timestamps:true
 })
