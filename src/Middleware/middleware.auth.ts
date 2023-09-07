@@ -1,29 +1,37 @@
 import { NextFunction, Request, Response } from "express";
 import { JwtPayload } from "jsonwebtoken";
-import { decode } from "querystring";
+require('dotenv').config()
 const jwt = require('jsonwebtoken');
 const { verifyAccessToken } = require('../lib/jwt')
 
 export interface CustomRequest extends Request{
-    user:JwtPayload
+    user:JwtPayload | any
 }
-const authenticate = (req: Request, res:Response, next: NextFunction) => {
+const authenticate = async (req: CustomRequest, res:Response, next: NextFunction) => {
     try{
-        const token =  req.header('Authorization')?.replace('Bearer', "")
+        const token =  req.header('Authorization')?.replace('Bearer', " ")
+        
         if(!token) return res.status(401)
                                .json({
                                     status:201,
                                     message: "Unauthorized user, please log in"
                                 })
-        const decoded = verifyAccessToken(token);
-        (req as CustomRequest).user =  decoded
+        const decoded = verifyAccessToken(token.trim());
+        // (req as CustomRequest).user =  decoded
+        req.user = decoded.user
+      
    
-        next()    
-    }catch(e){
-        res.status(401).json({
-              status:401,
-              message: "Please try to authenticate again "
+        return next()    
+    }catch(e: any){
+        res.status(500).json({
+              status:'failed',
+              message: "Internal server error ",
+              info: e.message
         });
     }
     
+}
+
+module.exports = {
+     authenticate
 }

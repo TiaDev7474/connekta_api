@@ -11,7 +11,7 @@ type MessageContentType = {
 }
 
 interface IMessage {
-    conversationID: Types.ObjectId,
+    conversationId: Types.ObjectId,
     author: Types.ObjectId,
     content:MessageContentType,
     readBy:Types.ObjectId,
@@ -23,7 +23,7 @@ interface IMessage {
 }
 
 const MessageSchema = new Schema<IMessage>({
-    conversationID:{ type: Schema.Types.ObjectId, ref:'Conversation'},
+    conversationId:{ type: Schema.Types.ObjectId, ref:'Conversation'},
     author:{ type: Schema.Types.ObjectId, ref:'User'},
     content:{
         text:String,

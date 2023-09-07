@@ -29,6 +29,10 @@ ConversationSchema.virtual('messages',{
     ref:'Message',
     localField: '_id',
     foreignField:'conversationID',
+    options:{
+        populate: { path: 'author', select: 'avatar' },
+    }
+    
 })
 
 module.exports = model<IConversation>('Conversation',ConversationSchema)

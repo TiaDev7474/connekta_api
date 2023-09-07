@@ -4,4 +4,5 @@ const authController = require('../Controller/controller.auth');
 
 authRouter.post('/register', userValidationRules(), validate ,authController.register);
 authRouter.post('/login', userValidationRules(), validate, authController.login);
+
 module.exports = authRouter;

@@ -1,6 +1,8 @@
-import express ,{ Express, NextFunction, Request, Response, urlencoded } from 'express'
-const dotenv = require('dotenv')
-const authRouter = require('./src/Routes/routes.auth')
+import express ,{ Express, NextFunction, Request, Response, urlencoded } from 'express';
+const dotenv = require('dotenv');
+const authRouter = require('./src/Routes/routes.auth');
+const requestRouter = require('./src/Routes/routes.friendrequest');
+const { authenticate } = require('../Middleware/middleware.auth');
 require('./src/Database/db')
 dotenv.config();
 //init mongoDB connection
@@ -17,7 +19,8 @@ app.get('/',( req: Request , res: Response , next: NextFunction ) => {
 
 
 //routes definition
-app.use('/api/auth',authRouter)
+app.use('/api/auth',authRouter);
+app.use('/api/request',authenticate, requestRouter);
 
 
 app.listen(port , () => {
