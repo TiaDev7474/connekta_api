@@ -2,7 +2,7 @@ import express ,{ Express, NextFunction, Request, Response, urlencoded } from 'e
 const dotenv = require('dotenv');
 const authRouter = require('./src/Routes/routes.auth');
 const requestRouter = require('./src/Routes/routes.friendrequest');
-const { authenticate } = require('../Middleware/middleware.auth');
+const { authenticate } = require('./src/Middleware/middleware.auth');
 require('./src/Database/db')
 dotenv.config();
 //init mongoDB connection
