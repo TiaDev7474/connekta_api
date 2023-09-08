@@ -17,9 +17,9 @@ const FrienRequestSchema = new Schema<IFriendRequest>({
 //static method that populate author and destination before every find method is performed
 //Todo: select only the necessary field to be selected
 FrienRequestSchema.pre('find', function(next){
-     this.populate('author')
-         .populate('destination')
-         .select(['_id', 'avatar'])
+     this.populate({path: 'author', select:["_id", "username", "avatar"]})
+         .populate({path: 'destination', select:["_id", "username", "avatar"]})
+         
      next()
 })
 
