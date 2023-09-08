@@ -7,8 +7,8 @@ module.exports = {
       getMessages: async (req: CustomRequest, res: Response, next: NextFunction) => {
             const { conversationId } = req.params;
             const { userId } = req.user;
-            const { lastPage, perPage} = req.body;
-            const limit =  (lastPage -1 ) * perPage;
+            const { lastPage, perPage} = req.query;
+            const limit =  Number(lastPage) - 1 * Number(perPage);
             try{
                  const isUserMember = await  isMember(userId, conversationId)
                  if(!isUserMember) return res.status(403)
@@ -25,7 +25,7 @@ module.exports = {
 
             }catch(e: any){
                 res.status(500).json({
-                    status:500,
+                    status:"failed",
                     message:"Internal server error",
                     info:e.message,
                     
@@ -34,8 +34,8 @@ module.exports = {
       },
       getConversationsList: async (req: CustomRequest, res: Response, next: NextFunction) => {
             const { userId } = req.user;
-            const { lastPage, perPage } = req.body;
-            const limit =  (lastPage -1 ) * perPage;
+            const { lastPage , perPage }= req.query;
+            const limit =  Number(lastPage) - 1 * Number(perPage);
             try{
                   const conversationList = await  getUserConversations(userId, limit);
 

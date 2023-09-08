@@ -1,8 +1,8 @@
 const messageRouter = require('express').Router();
 const messageController = require('../Controller/controller.message');
 
-messageRouter.post('/:conversationId/message', messageController.sendOne)
-             .delete('/:conversationId/message', messageController.deleteOne)
+messageRouter.post('/send', messageController.sendOne)
+             .delete('/:messageId/delete', messageController.deleteOne)
 
 
 

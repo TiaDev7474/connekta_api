@@ -19,6 +19,7 @@ const FrienRequestSchema = new Schema<IFriendRequest>({
 FrienRequestSchema.pre('find', function(next){
      this.populate('author')
          .populate('destination')
+         .select(['_id', 'avatar'])
      next()
 })
 

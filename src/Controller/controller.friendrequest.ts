@@ -6,8 +6,8 @@ const RequestModel = require('../Model/model.friendRequest');
 module.exports = {
      getAll: async(req: Request, res:Response, next: NextFunction) => {
            const { userId } = (req as CustomRequest).user
-           const { lastPage , perPage  }= req.body;
-           const limit = ( lastPage - 1) * perPage;
+           const { lastPage , perPage  }= req.query;
+           const limit =  Number(lastPage) - 1 * Number(perPage);
            try{
                 const requests = await RequestModel.
                                                    find({destination: userId}).
@@ -62,8 +62,8 @@ module.exports = {
      },
      acceptOne: async (req: Request, res:Response, next: NextFunction) => {
             const { userId } = (req as CustomRequest).user;
-            const { requestId } = req.body;
-            console.log(userId)
+            const { requestId } = req.params;
+            // console.log(userId)
             try{
                 const filter = {
                     _id: requestId, 
@@ -125,7 +125,7 @@ module.exports = {
      
      declineOne: async (req: Request, res:Response, next: NextFunction) => {
         const { userId } = (req as CustomRequest).user;
-        const { requestId } = req.body;
+        const { requestId } = req.params;
         try{
             const filter = {
                 _id: requestId, 
