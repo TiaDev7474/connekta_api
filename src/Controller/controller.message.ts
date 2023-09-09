@@ -87,7 +87,7 @@ module.exports ={
               res.status(500).json({
                   status:500,
                   message:"Internal server error",
-                  info:e.message,
+                  info:e,
                   
               })
         }
