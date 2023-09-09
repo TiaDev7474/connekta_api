@@ -5,7 +5,7 @@ const requestRouter = require('./src/Routes/routes.friendrequest');
 const messageRouter = require('./src/Routes/routes.message');
 const conversationRouter = require('./src/Routes/routes.conversation');
 const { authenticate } = require('./src/Middleware/middleware.auth');
-require('./src/Database/db')
+require('./src/Database/db');
 dotenv.config();
 //init mongoDB connection
 const app:Express = express();
