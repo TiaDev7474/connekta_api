@@ -28,7 +28,7 @@ const MessageSchema = new Schema<IMessage>({
     content:{
         text:String,
         file:{
-            type:String,
+            mimetype:String,
             url:String
         }
     },

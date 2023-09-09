@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 import { CustomRequest } from "../Middleware/middleware.auth";
-const { isUserMember, isOwner } = require('../helpers/conversation.helper');
+
+const { isMember, isOwner , deleteMessage} = require('../helpers/conversation.helper');
+const { uploadFile , getFileUrl} = require('../Services/firebase-storage');
 const MessageModel = require('../Model/model.message');
 
 
@@ -8,10 +10,32 @@ module.exports ={
     sendOne: async (req: CustomRequest, res:Response, next: NextFunction) => {
           const { conversationId } = req.params;
           const { userId } = req.user;
+          
           const { messageContent }  = req.body
+        
           try{
-              const isMember: boolean | null = await isUserMember(userId, conversationId); 
-              if(!isMember) return res.status(403)
+              console.log(req.file)
+              let content;
+              if(req.file){
+                   const file = req.file
+                   const uniqueFileName = file.originalname + Date.now();
+                   await  uploadFile( uniqueFileName, file.filename, file.buffer);
+                   const fileUrl = await getFileUrl(uniqueFileName)
+                   content = {
+                       file:{
+                            mimetype:file.mimetype,
+                            url: fileUrl[0]
+                       }
+                       
+                   };
+                   console.log(content)
+              }else{
+                  content = {
+                         text: messageContent
+                  }
+              }
+              const isUserMember: boolean | null = await isMember(userId, conversationId); 
+              if(!isUserMember) return res.status(403)
                                       .json({
                                           status:403,
                                           message: "Not authorized to perform this action"
@@ -19,9 +43,7 @@ module.exports ={
              const newMessage = new MessageModel({
                 conversationId: conversationId,
                 author: userId,
-                content:{
-                    text: messageContent
-                }
+                content: content
                 
              });
              const savedMessage = await newMessage.save();
@@ -43,14 +65,17 @@ module.exports ={
     },
     deleteOne: async (req: CustomRequest, res:Response, next: NextFunction) => {
         const { conversationId , messageId} = req.params;
+       
         const { userId } = req.user;
         try{
             const isUserOwner: boolean | null  = await isOwner(userId, conversationId, messageId); 
+    
             if(!isUserOwner) return res.status(403)
                                     .json({
                                         status:403,
                                         message: "Not authorized to perform this action"
                                     })
+            await deleteMessage(messageId);
             res.status(200)
               .json({
                   status:"Success",
@@ -66,5 +91,8 @@ module.exports ={
                   
               })
         }
+  },
+  //todo: allow user to react a message 
+  reactOne:  async (req: CustomRequest, res:Response, next: NextFunction) => {
   }
 }

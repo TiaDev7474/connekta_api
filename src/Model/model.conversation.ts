@@ -19,18 +19,30 @@ const ConversationSchema = new Schema<IConversation>({
 })
 
 ConversationSchema.pre('find', function(next){
-     this.populate('members')
+     this.populate({ path: 'members', select: ['avatar','username'] })
+         
      next()
 })
 
 //Todo: make a virtual method to retrieve conversation'messages
+ConversationSchema.virtual('lastMessage',{
+    ref:'Message',
+    localField: '_id',
+    foreignField:'conversationId',
+    options:{
+        limit:1,
+        sort:{createdAt: -1}
+    }
+})
 
 ConversationSchema.virtual('messages',{
     ref:'Message',
     localField: '_id',
-    foreignField:'conversationID',
+    foreignField:'conversationId',
     options:{
-        populate: { path: 'author', select: 'avatar' },
+        populate: { path: 'author', select: ['avatar','username'] },
+        sort:{createdAt: -1},
+       
     }
     
 })
