@@ -7,7 +7,7 @@ const { getStorage } = require('firebase-admin/storage');
 if (process.env.NODE_ENV === "production") {
     //do something in production
     initializeApp({
-        credential: cert(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`),
+        credential: cert(JSON.parse(`${process.env.GOOGLE_APPLICATION_CREDENTIALS}`)),
         storageBucket:`${process.env.BUCKET_FOLDER_PATH}`
     })
   }
