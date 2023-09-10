@@ -4,6 +4,7 @@ const authRouter = require('./src/Routes/routes.auth');
 const requestRouter = require('./src/Routes/routes.friendrequest');
 const messageRouter = require('./src/Routes/routes.message');
 const conversationRouter = require('./src/Routes/routes.conversation');
+const userRouter = require('./src/Routes/routes.user');
 const { authenticate } = require('./src/Middleware/middleware.auth');
 require('./src/Database/db');
 dotenv.config();
@@ -19,12 +20,12 @@ app.get('/',( req: Request , res: Response , next: NextFunction ) => {
      
 })
 
-
 //routes definition
 app.use('/api/auth',authRouter);
 app.use('/api/user/request',authenticate, requestRouter);
 app.use('/api/user/conversation', authenticate, conversationRouter);
 app.use("/api/user/conversation/message", authenticate,messageRouter);
+app.use("/api/user", authenticate, userRouter);
 
 
 app.listen(port , () => {

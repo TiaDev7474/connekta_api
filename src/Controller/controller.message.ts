@@ -19,7 +19,7 @@ module.exports ={
               if(req.file){
                    const file = req.file
                    const uniqueFileName = file.originalname + Date.now();
-                   await  uploadFile( uniqueFileName, file.filename, file.buffer);
+                   await  uploadFile( uniqueFileName, file.mimetype, file.buffer);
                    const fileUrl = await getFileUrl(uniqueFileName)
                    content = {
                        file:{

@@ -13,8 +13,9 @@ export interface IUser {
     username: string,
     email: string,
     bio?:string,
-    isVerified:boolean
-    lastActivity:Date
+    isVerified:boolean,
+    lastActivity:Date,
+    interest:Types.Array<string>,
     avatar?: Types.Array<string>,
     password:string,
     devices:Types.Array<DeviceType> 
@@ -25,11 +26,12 @@ interface IUserMethods {
 }
 
 const UserSchema = new Schema<IUser,{},IUserMethods>({
-    // username:{ type: String , required:true},
+    username:{ type: String , default:'Anonymous'},
     email:{ type: String , index:true},
     bio:{ type: String},
     isVerified:{type: Boolean , default:false},
     lastActivity:{ type: Date , default: Date.now()},
+    interest:[String],
     avatar:[String],
     password:{type: String, required: true}
 },{
