@@ -10,7 +10,7 @@ export interface CustomRequest extends Request{
 const authenticate = async (req: CustomRequest, res:Response, next: NextFunction) => {
     try{
         const token =  req.header('Authorization')?.replace('Bearer', " ")
-        
+        console.log(token)
         if(!token) return res.status(401)
                                .json({
                                     status:201,

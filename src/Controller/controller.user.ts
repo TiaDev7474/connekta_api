@@ -5,6 +5,28 @@ const UserModel = require('../Model/model.user');
    
 const { getFriendSuggestion } = require('../helpers/friendship.helper')
 module.exports = {
+    getAuthenticatedUser: async  (req:CustomRequest, res:Response , next:NextFunction) => {
+         const { userId } = req.user;
+         try{
+              const user = await UserModel.findById(userId)
+              if(!user) return res.status(404).json({
+                    status:"failed",
+                    message: "User not found"
+              })
+              res.status(200).json({
+                   status:"Success",
+                   message: "User retrieve successfully",
+                   data: user
+              })
+         }catch(e : any){
+            res.status(500).json({
+                status:"failed",
+                message:"Internal server error",
+                info:e.message,
+            
+            })
+         }
+    },
     updateProfilePicture: async  (req:CustomRequest, res:Response , next:NextFunction) => {
           const { userId } = req.user;
           try{

@@ -16,10 +16,13 @@ module.exports = {
                                           })
                 const user = await userHelper.createUser(email, password)
                //  console.log(user)
-                res.status(201).json({
+                res.status(500).json({
                     status:201,
                     message:"User registred successfully",
-                    userEmail: user._doc.email
+                    data:{
+                         userEmail: user._doc.email
+                    }
+                   
                 })
            }catch(e: any){
                res.status(500).json({
@@ -45,13 +48,15 @@ module.exports = {
                                              status:401,
                                              message:"Failed to log in, Pair email/password not correct" 
                                   })  
-                const { password, ...authenticatedUser} = user._doc  
+               //  const { password, ...authenticatedUser} = user._doc  
                 res.status(201).json({
                      status:201,
                      message:"You are Successfully logged in",
-                     data: authenticatedUser,
-                     token:  generateAccessToken({user: { userId: user._doc._id}}),
-                     refreshToken:  generateRefreshToken({user: { userId: user._doc._id}})
+                     data:{
+                         token:  generateAccessToken({user: { userId: user._doc._id}}),
+                         refreshToken:  generateRefreshToken({user: { userId: user._doc._id}})
+                     },
+                    
                 })
             }catch(e: any){
                res.status(500).json({
