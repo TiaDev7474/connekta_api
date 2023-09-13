@@ -16,7 +16,7 @@ const port = process.env.PORT || 8000;
 
 //middlewares
 app.use(cors({
-     origin:["http://localhost:5173","https://conneckta.onrender.com"],
+     origin:["https://conneckta.onrender.com","http://localhost:5173"],
      methods:['GET','POST','PUT','DELETE'],
 }))
 app.use(express.json())
